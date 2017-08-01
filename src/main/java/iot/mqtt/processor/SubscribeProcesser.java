@@ -23,9 +23,9 @@ public class SubscribeProcesser implements Processer {
 		SubscribeMessage sm = (SubscribeMessage) msg;
 		SubAckMessage sam = new SubAckMessage();
 		sam.setMessageId(sm.getMessageId());
+		sam.addQoS(QoS.AT_MOST_ONCE);
 		if (sm.getTopics() != null) {
 			for (String topic : sm.getTopics()) {
-				sam.addQoS(QoS.AT_MOST_ONCE);
 				ChannelEntity channelEntity = new TcpChannelEntity(
 						ctx.channel());
 				MemoryMetaPool.registerTopic(channelEntity, topic);

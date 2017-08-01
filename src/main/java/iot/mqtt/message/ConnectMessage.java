@@ -65,7 +65,6 @@ public class ConnectMessage extends Message {
       DataInputStream dis = new DataInputStream(in);
       protocolId = dis.readUTF();
       protocolVersion = dis.readByte();
-      logger.info("protocolId:" + protocolId + ",protocolVersion:" + protocolVersion);
       byte cFlags = dis.readByte();
       hasUsername = (cFlags & 0x80) > 0;
       hasPassword = (cFlags & 0x40) > 0;
@@ -74,6 +73,7 @@ public class ConnectMessage extends Message {
       hasWill = (cFlags & 0x04) > 0;
       cleanSession = (cFlags & 0x20) > 0;
       keepAlive = dis.read() * 256 + dis.read();
+      logger.info("protocolId:" + protocolId + ",protocolVersion:" + protocolVersion + ",keepAlive:" + keepAlive);
       clientId = dis.readUTF();
       if (hasWill) {
           willTopic = dis.readUTF();
