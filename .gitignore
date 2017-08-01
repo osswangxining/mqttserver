@@ -29,3 +29,7 @@ dclient001-tcp1270011883/.lck
 *.prefs
 
 subscriber-client001-tcp1270011883/.lck
+
+pub-websocketclient-tcp1270011883/.lck
+
+pub-websocketclient-tcp1270011883/s-1.msg

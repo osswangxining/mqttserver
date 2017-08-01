@@ -7,11 +7,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
+import iot.mqtt.server.Server;
+
 public class ConnectMessage extends Message {
+  private static final InternalLogger logger = InternalLoggerFactory.getInstance(ConnectMessage.class);
+
   private static int CONNECT_HEADER_SIZE = 12;
 
-  private String protocolId = "MQIsdp";
-  private byte protocolVersion = 3;
+  private String protocolId = "MQTT";//"MQIsdp";
+  private byte protocolVersion = 4;//3;
   private String clientId;
   private int keepAlive;
   private String username;
@@ -59,6 +65,7 @@ public class ConnectMessage extends Message {
       DataInputStream dis = new DataInputStream(in);
       protocolId = dis.readUTF();
       protocolVersion = dis.readByte();
+      logger.info("protocolId:" + protocolId + ",protocolVersion:" + protocolVersion);
       byte cFlags = dis.readByte();
       hasUsername = (cFlags & 0x80) > 0;
       hasPassword = (cFlags & 0x40) > 0;
