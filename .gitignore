@@ -21,3 +21,11 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /target/
+
+dclient001-tcp1270011883/.lck
+
+.settings/org.eclipse.core.resources.prefs
+
+*.prefs
+
+subscriber-client001-tcp1270011883/.lck
