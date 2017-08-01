@@ -1,4 +1,4 @@
-package iot.mqtt;
+package iot.mqtt.handler;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import io.netty.handler.codec.MessageToMessageEncoder;
 import iot.mqtt.message.Message;
 
 @Sharable
-public class MqttMessageNewEncoder extends MessageToMessageEncoder<Object> {
+public class MqttMessageEncoder extends MessageToMessageEncoder<Object> {
 	@Override
 	protected void encode(ChannelHandlerContext ctx, Object msg,
 			List<Object> out) throws Exception {

@@ -66,7 +66,7 @@ public class MqttMessageHandler extends ChannelInboundHandlerAdapter {
 		if (p == null) {
 			return;
 		}
-		Message rmsg = p.proc(msg, ctx);
+		Message rmsg = p.process(msg, ctx);
 		if (rmsg == null) {
 			return;
 		}

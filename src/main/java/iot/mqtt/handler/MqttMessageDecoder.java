@@ -1,4 +1,4 @@
-package iot.mqtt;
+package iot.mqtt.handler;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
@@ -9,7 +9,7 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import iot.mqtt.message.Message;
 import iot.mqtt.message.MessageInputStream;
 
-public class MqttMessageNewDecoder extends MessageToMessageDecoder<ByteBuf> {
+public class MqttMessageDecoder extends MessageToMessageDecoder<ByteBuf> {
 
 	@Override
 	public void decode(ChannelHandlerContext ctx, ByteBuf buf,

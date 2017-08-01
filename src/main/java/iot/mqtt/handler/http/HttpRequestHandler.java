@@ -1,4 +1,4 @@
-package iot.mqtt.handler;
+package iot.mqtt.handler.http;
 
 import static io.netty.handler.codec.http.HttpHeaders.isKeepAlive;
 import static io.netty.handler.codec.http.HttpHeaders.setContentLength;
@@ -23,8 +23,6 @@ import io.netty.handler.timeout.ReadTimeoutException;
 import io.netty.util.CharsetUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
-import iot.mqtt.handler.http.HttpSessionStore;
-import iot.mqtt.handler.http.HttpTransport;
 
 @Sharable
 public class HttpRequestHandler extends

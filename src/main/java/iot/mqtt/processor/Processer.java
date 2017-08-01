@@ -5,5 +5,5 @@ import iot.mqtt.message.Message;
 
 public interface Processer {
 
-  public Message proc(Message msg, ChannelHandlerContext ctx);
+  public Message process(Message msg, ChannelHandlerContext ctx);
 }

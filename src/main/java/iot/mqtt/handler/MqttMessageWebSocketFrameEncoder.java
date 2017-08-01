@@ -1,4 +1,4 @@
-package iot.mqtt;
+package iot.mqtt.handler;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class MqttMessageWebSocketFrameEncoder extends
 	@Override
 	protected void encode(ChannelHandlerContext ctx, Message msg,
 			List<Object> out) throws Exception {
-		if (msg == null)
+		if (msg == null || !(msg instanceof Message))
 			return;
 
 		byte[] data = ((Message) msg).toBytes();

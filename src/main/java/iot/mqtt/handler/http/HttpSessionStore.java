@@ -17,7 +17,7 @@ import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 import io.netty.handler.codec.http.multipart.InterfaceHttpData.HttpDataType;
 import io.netty.util.AttributeKey;
-import iot.mqtt.MemPool;
+import iot.mqtt.meta.MemoryMetaPool;
 
 public class HttpSessionStore {
 	// Global Identiter/全局唯一
@@ -62,7 +62,7 @@ public class HttpSessionStore {
 			return false;
 		}
 
-		return MemPool.checkClientID(jsessionId);
+		return MemoryMetaPool.checkClientID(jsessionId);
 	}
 
 	public static boolean checkJSessionId(String sessionId) {
@@ -70,7 +70,7 @@ public class HttpSessionStore {
 			return false;
 		}
 
-		return MemPool.checkClientID(sessionId);
+		return MemoryMetaPool.checkClientID(sessionId);
 	}
 
 	public static String getClientSessionId(HttpRequest req) {

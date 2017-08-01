@@ -12,8 +12,8 @@ public class PubWebMessage {
 			UnsupportedEncodingException {
 
 		String tcpUrl = "tcp://127.0.0.1:1883";
-		String clientId = "pub-msg/client";
-		String topicName = "sub-msg/webclient1";
+		String clientId = "pub-websocket/client";
+		String topicName = "topic_back";
 		String message = "{id:1, msg:'Hello Mqtt Server !'}";
 		
 		System.out.println("start...");
@@ -30,7 +30,7 @@ public class PubWebMessage {
 		client.connect(mqcConf);
 
 		MqttTopic topic = client.getTopic(topicName);
-		topic.publish(message.getBytes("utf8"), 0, false);
+		topic.publish(message.getBytes("utf8"), 1, false);
 
 //		client.close();
 	}

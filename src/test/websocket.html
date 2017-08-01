@@ -1,6 +1,6 @@
 <script src="mqttws31.min.js" type="text/javascript"></script>
 <script>
-	client = new Paho.MQTT.Client("iot.eclipse.org", 443, "/ws","js-utility-UQrBr");//建立客户端实例  
+	client = new Paho.MQTT.Client("127.0.0.1", 8888, "/websocket","js-utility-UQrBr");//建立客户端实例  
 	client.connect({
 		onSuccess : onConnect
 	});//连接服务器并注册连接成功处理事件  

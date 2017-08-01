@@ -5,7 +5,7 @@ import iot.mqtt.message.Message;
 
 public class DisConnectProcesser implements Processer {
 
-  public Message proc(Message msg, ChannelHandlerContext ctx) {
+  public Message process(Message msg, ChannelHandlerContext ctx) {
     ctx.channel().close();
     return null;
   }

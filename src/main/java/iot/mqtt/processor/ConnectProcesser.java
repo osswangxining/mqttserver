@@ -4,9 +4,9 @@ import java.util.concurrent.TimeUnit;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.ReadTimeoutHandler;
-import iot.mqtt.MemPool;
 import iot.mqtt.message.ConnAckMessage;
 import iot.mqtt.message.ConnAckMessage.ConnectionStatus;
+import iot.mqtt.meta.MemoryMetaPool;
 import iot.mqtt.message.ConnectMessage;
 import iot.mqtt.message.Message;
 
@@ -18,7 +18,7 @@ private static ConnAckMessage ACCEPTED = new ConnAckMessage(
       ConnectionStatus.ACCEPTED);
 
   @Override
-  public Message proc(Message msg, ChannelHandlerContext ctx) {
+  public Message process(Message msg, ChannelHandlerContext ctx) {
     ConnectMessage cm = (ConnectMessage) msg;
     if (!"MQIsdp".equalsIgnoreCase(cm.getProtocolId())
             || cm.getProtocolVersion() != 3) {
@@ -30,7 +30,7 @@ private static ConnAckMessage ACCEPTED = new ConnAckMessage(
     ctx.pipeline().addFirst("readTimeOutHandler",
             new ReadTimeoutHandler(timeout, TimeUnit.SECONDS));
 
-    MemPool.registerClienId(cm.getClientId(), ctx.channel());
+    MemoryMetaPool.registerClienId(cm.getClientId(), ctx.channel());
 
     return ACCEPTED;
   }

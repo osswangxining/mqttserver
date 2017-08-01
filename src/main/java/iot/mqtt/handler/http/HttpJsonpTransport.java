@@ -36,12 +36,12 @@ import io.netty.util.CharsetUtil;
 import io.netty.util.concurrent.ScheduledFuture;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
-import iot.mqtt.MemPool;
 import iot.mqtt.handler.entity.ChannelEntity;
 import iot.mqtt.handler.entity.HttpChannelEntity;
 import iot.mqtt.handler.entity.HttpJsonpChannelEntity;
 import iot.mqtt.message.Message;
 import iot.mqtt.message.PublishMessage;
+import iot.mqtt.meta.MemoryMetaPool;
 
 public class HttpJsonpTransport extends HttpTransport {
 	private static final InternalLogger logger = InternalLoggerFactory
@@ -119,7 +119,7 @@ public class HttpJsonpTransport extends HttpTransport {
 		}
 
 		PublishMessage publishMessage = new PublishMessage(topic, payload);
-		Set<ChannelEntity> entrySet = MemPool.getChannelByTopics(topic);
+		Set<ChannelEntity> entrySet = MemoryMetaPool.getChannelByTopics(topic);
 		for (ChannelEntity channelEntity : entrySet) {
 			channelEntity.write(publishMessage);
 		}
@@ -137,12 +137,12 @@ public class HttpJsonpTransport extends HttpTransport {
 		String topic = HttpSessionStore.getParameter(req, "topic");
 		String sessionId = HttpSessionStore.getClientSessionId(req);
 
-		HttpChannelEntity httpChannelEntity = (HttpChannelEntity) MemPool
+		HttpChannelEntity httpChannelEntity = (HttpChannelEntity) MemoryMetaPool
 				.getChannelEntryByClientId(sessionId);
 
-		MemPool.unregisterTopic(httpChannelEntity, topic);
+		MemoryMetaPool.unregisterTopic(httpChannelEntity, topic);
 
-		Set<String> topicSet = MemPool
+		Set<String> topicSet = MemoryMetaPool
 				.getTopicsByChannelEntry(httpChannelEntity);
 
 		Map<String, Object> map = new HashMap<String, Object>(2);
@@ -158,7 +158,7 @@ public class HttpJsonpTransport extends HttpTransport {
 	public void handleTimeout(ChannelHandlerContext ctx) {
 		HttpRequest req = ctx.attr(HttpSessionStore.key).get();
 		String sessionId = HttpSessionStore.getClientSessionId(req);
-		HttpJsonpChannelEntity httpChannelEntity = (HttpJsonpChannelEntity) MemPool
+		HttpJsonpChannelEntity httpChannelEntity = (HttpJsonpChannelEntity) MemoryMetaPool
 				.getChannelEntryByClientId(sessionId);
 		httpChannelEntity.setCtx(null);
 		// empty json
@@ -189,7 +189,7 @@ public class HttpJsonpTransport extends HttpTransport {
 		ctx.write(res);
 
 		String sessionId = HttpSessionStore.getClientSessionId(req);
-		HttpJsonpChannelEntity httpChannelEntity = (HttpJsonpChannelEntity) MemPool
+		HttpJsonpChannelEntity httpChannelEntity = (HttpJsonpChannelEntity) MemoryMetaPool
 				.getChannelEntryByClientId(sessionId);
 		// cancel SessionTimeoutTask
 		httpChannelEntity.getScheduleTask().cancel(true);
@@ -275,15 +275,15 @@ public class HttpJsonpTransport extends HttpTransport {
 
 		String sessionId = HttpSessionStore.getClientSessionId(req);
 
-		HttpChannelEntity httpChannelEntity = (HttpChannelEntity) MemPool
+		HttpChannelEntity httpChannelEntity = (HttpChannelEntity) MemoryMetaPool
 				.getChannelEntryByClientId(sessionId);
 
 		if (httpChannelEntity.isBlank()) {
 			httpChannelEntity.setBlank(false);
-			MemPool.registerClienId(sessionId, httpChannelEntity);
+			MemoryMetaPool.registerClienId(sessionId, httpChannelEntity);
 		}
 
-		MemPool.registerTopic(httpChannelEntity, topic);
+		MemoryMetaPool.registerTopic(httpChannelEntity, topic);
 		logger.debug("topic = " + topic + " qos = " + qos);
 
 		sendFullHttpOKResponse(ctx, req, "{status:true}");
@@ -297,10 +297,10 @@ public class HttpJsonpTransport extends HttpTransport {
 			sessionId = HttpSessionStore.genJSessionId();
 
 			httpChannelEntity = new HttpJsonpChannelEntity(sessionId, true);
-			MemPool.registerClienId(sessionId, httpChannelEntity);
+			MemoryMetaPool.registerClienId(sessionId, httpChannelEntity);
 		} else {
 			isConnected = true;
-			httpChannelEntity = (HttpChannelEntity) MemPool
+			httpChannelEntity = (HttpChannelEntity) MemoryMetaPool
 					.getChannelEntryByClientId(sessionId);
 		}
 
@@ -381,10 +381,10 @@ public class HttpJsonpTransport extends HttpTransport {
 
 		@Override
 		public void run() {
-			ChannelEntity chn = MemPool
+			ChannelEntity chn = MemoryMetaPool
 					.getChannelEntryByClientId(this.sessionId);
-			MemPool.unregisterChannel(chn);
-			MemPool.unregisterClientId(sessionId);
+			MemoryMetaPool.unregisterChannel(chn);
+			MemoryMetaPool.unregisterClientId(sessionId);
 
 			logger.debug("SessionTimeoutTask clear session = " + sessionId);
 		}

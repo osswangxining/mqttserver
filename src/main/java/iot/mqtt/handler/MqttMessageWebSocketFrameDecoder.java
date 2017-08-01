@@ -1,4 +1,4 @@
-package iot.mqtt;
+package iot.mqtt.handler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -10,10 +10,10 @@ import java.util.List;
 public class MqttMessageWebSocketFrameDecoder extends
 		MessageToMessageDecoder<BinaryWebSocketFrame> {
 
-	private MqttMessageNewDecoder messageNewDecoder;
+	private MqttMessageDecoder messageNewDecoder;
 
 	public MqttMessageWebSocketFrameDecoder() {
-		messageNewDecoder = new MqttMessageNewDecoder();
+		messageNewDecoder = new MqttMessageDecoder();
 	}
 
 	@Override

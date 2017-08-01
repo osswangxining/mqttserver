@@ -1,7 +1,6 @@
 package iot.mqtt.processor;
 
 import io.netty.channel.ChannelHandlerContext;
-import iot.mqtt.MemPool;
 import iot.mqtt.handler.entity.ChannelEntity;
 import iot.mqtt.handler.entity.TcpChannelEntity;
 import iot.mqtt.message.DisconnectMessage;
@@ -9,13 +8,14 @@ import iot.mqtt.message.Message;
 import iot.mqtt.message.QoS;
 import iot.mqtt.message.SubAckMessage;
 import iot.mqtt.message.SubscribeMessage;
+import iot.mqtt.meta.MemoryMetaPool;
 
 public class SubscribeProcesser implements Processer {
 
 	private static DisconnectMessage DISCONNECT = new DisconnectMessage();
 
-	public Message proc(Message msg, ChannelHandlerContext ctx) {
-		String clientId = MemPool.getClientId(ctx.channel());
+	public Message process(Message msg, ChannelHandlerContext ctx) {
+		String clientId = MemoryMetaPool.getClientId(ctx.channel());
 		if (clientId == null) {
 			return DISCONNECT;
 		}
@@ -28,7 +28,7 @@ public class SubscribeProcesser implements Processer {
 				sam.addQoS(QoS.AT_MOST_ONCE);
 				ChannelEntity channelEntity = new TcpChannelEntity(
 						ctx.channel());
-				MemPool.registerTopic(channelEntity, topic);
+				MemoryMetaPool.registerTopic(channelEntity, topic);
 			}
 		}
 
